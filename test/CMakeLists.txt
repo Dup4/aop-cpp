@@ -17,7 +17,7 @@ FetchContent_Declare(
 FetchContent_Declare(
     snapshot
     QUIET
-    GIT_REPOSITORY https://github.com/Dup4/snapshot-cpp.git
+    GIT_REPOSITORY https://github.com/Dup4/decorator-cpp.git
     GIT_TAG v0.1.5
 )
 
@@ -41,7 +41,7 @@ add_executable(
 
 target_link_libraries(
     unit_test
-PRIVATE
+    PRIVATE
     snapshot
     gtest_main
 )
@@ -50,9 +50,9 @@ PRIVATE
 include(GoogleTest)
 gtest_discover_tests(
     unit_test
-PROPERTIES
+    PROPERTIES
     LABELS "unit"
-DISCOVERY_TIMEOUT  # how long to wait (in seconds) before crashing
+    DISCOVERY_TIMEOUT # how long to wait (in seconds) before crashing
     240
 )
 
@@ -63,7 +63,7 @@ add_executable(
 
 target_link_libraries(
     unit_benchmark
-PRIVATE
+    PRIVATE
     snapshot
     benchmark::benchmark
     benchmark::benchmark_main
