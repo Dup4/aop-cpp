@@ -1,4 +1,4 @@
-option(decorator_cpp_build_tests "Build all of decorator's own tests." OFF)
+option(DECORATOR_CPP_BUILD_TESTS "Build all of decorator's own tests." OFF)
 
 cmake_minimum_required(VERSION 3.14)
 
@@ -22,7 +22,7 @@ include_directories(
 add_library(decorator INTERFACE)
 target_include_directories(decorator INTERFACE ${PROJECT_SOURCE_DIR}/include/)
 
-if(decorator_cpp_build_tests)
+if(DECORATOR_CPP_BUILD_TESTS)
     enable_testing()
 
     add_subdirectory(test/)

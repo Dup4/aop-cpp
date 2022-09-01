@@ -17,8 +17,8 @@ FetchContent_Declare(
 FetchContent_Declare(
     snapshot
     QUIET
-    GIT_REPOSITORY https://github.com/Dup4/decorator-cpp.git
-    GIT_TAG v0.1.5
+    GIT_REPOSITORY https://github.com/Dup4/snapshot-cpp.git
+    GIT_TAG v0.1.12
 )
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -31,12 +31,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-access-control")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
 
+file(GLOB UNITTEST_FILE "*_test.cc")
 add_executable(
     unit_test
-    ${PROJECT_SOURCE_DIR}/test/decorator_test.cc
-    ${PROJECT_SOURCE_DIR}/test/hello_world_test.cc
+    ${UNITTEST_FILE}
 )
 
 target_link_libraries(
@@ -56,9 +57,10 @@ gtest_discover_tests(
     240
 )
 
+file(GLOB BENCHMARK_FILE "*_benchmark.cc")
 add_executable(
     unit_benchmark
-    ${PROJECT_SOURCE_DIR}/test/hello_world_benchmark.cc
+    ${BENCHMARK_FILE}
 )
 
 target_link_libraries(

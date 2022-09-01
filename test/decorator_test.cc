@@ -1,4 +1,5 @@
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
+#include "snapshot/snapshot.h"
 
 #include "decorator/decorator.h"
 
