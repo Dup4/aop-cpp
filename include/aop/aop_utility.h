@@ -3,6 +3,8 @@
 
 #include <utility>
 
+#include "./aop_execute_context.h"
+
 namespace aop {
 
 class AOPUtility {
@@ -11,6 +13,32 @@ public:
     static auto GetProxyFunc(Args&&... args) {
         return [&](auto&& Func) {
             return Func(std::forward<Args>(args)...);
+        };
+    }
+
+    template <typename PreFunc, typename Func>
+    static auto ConcatFuncByQueue(PreFunc&& pre_func, Func&& func, AOPExecuteContext& ctx) {
+        return [&]() {
+            pre_func();
+
+            if (ctx.is_break) {
+                return;
+            }
+
+            func();
+        };
+    }
+
+    template <typename PreFunc, typename Func>
+    static auto ConcatFuncByStack(PreFunc&& pre_func, Func&& func, AOPExecuteContext& ctx) {
+        return [&]() {
+            func();
+
+            if (ctx.is_break) {
+                return;
+            }
+
+            pre_func();
         };
     }
 };

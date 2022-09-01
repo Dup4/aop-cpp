@@ -1,24 +1,52 @@
 #ifndef AOP_MACROS_H
 #define AOP_MACROS_H
 
-#define AOP_DECLARE_FUNC_BEGIN(func_name, return_value, ...)                                                        \
-    auto func_name(__VA_ARGS__)->return_value {                                                                     \
-        class AOPInternalMethodInitFor##func_name {                                                                 \
-        public:                                                                                                     \
-            AOPInternalMethodInitFor##func_name(AOPInternalInit& aop_internal_init)                                 \
-                    : aop_internal_init_(aop_internal_init) {                                                       \
-                aop_internal_init_.RegisterFunc(#func_name);                                                        \
-            }                                                                                                       \
-                                                                                                                    \
-        private:                                                                                                    \
-            AOPInternalInit& aop_internal_init_;                                                                    \
-        };                                                                                                          \
-                                                                                                                    \
-        static AOPInternalMethodInitFor##func_name aop_internal_method_init_for_##func_name##_{aop_internal_init_}; \
-                                                                                                                    \
-        auto execute_func = [&]() {
-#define AOP_DECLARE_FUNC_ASPECT(aspect) aspect
+#include <type_traits>
 
-#define AOP_DECLARE_FUNC_END() }
+#include "./aop_execute_context.h"
+#include "./aop_utility.h"
+
+#define AOP_DECLARE_FUNC_BEGIN(func, ...)                                                    \
+    using ReturnType = std::remove_reference_t<decltype(func(__VA_ARGS__))>;                 \
+    ReturnType res{};                                                                        \
+                                                                                             \
+    auto ctx = AOPExecuteContext{};                                                          \
+    [[maybe_unused]] auto proxy_args_func = AOPUtility::GetProxyFunc(ctx, res, __VA_ARGS__); \
+    auto before_func = []() {};                                                              \
+    auto after_func = []() {};                                                               \
+    auto execute_func = [&]() {                                                              \
+        res = func(__VA_ARGS__);                                                             \
+    };
+
+#define AOP_DECLARE_FUNC_ASPECT(aspect)                                                    \
+    {                                                                                      \
+        auto a = aspect;                                                                   \
+        before_func = AOPUtility::ConcatFuncByQueue(before_func,                           \
+                                                    proxy_args_func([&a](auto&&... args) { \
+                                                        a.Before(args);                    \
+                                                    }),                                    \
+                                                    ctx);                                  \
+                                                                                           \
+        after_func = AOPUtility::ConcatFuncByStack(after_func,                             \
+                                                   proxy_args_func([&a](auto&&... args) {  \
+                                                       a.After(args);                      \
+                                                   }),                                     \
+                                                   ctx);                                   \
+    }
+
+#define AOP_DECLARE_FUNC_END() \
+    if (!ctx.is_break) {       \
+        before_func();         \
+    }                          \
+                               \
+    if (!ctx.is_break) {       \
+        execute_func();        \
+    }                          \
+                               \
+    if (!ctx.is_break) {       \
+        after_func();          \
+    }                          \
+                               \
+    return res;
 
 #endif  // AOP_MACROS_H

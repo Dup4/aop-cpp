@@ -4,17 +4,26 @@
 
 namespace aop::test {
 
-class A : public aop::Register<A> {
+class A {
 public:
     A() {}
     ~A() {}
 
-    AOP_DECLARE_FUNC_BEGIN(Hello, void)
-    AOP_DECLARE_FUNC_END()
+    int Hello(int x) {
+        AOP_DECLARE_FUNC_BEGIN(hello, x)
+        AOP_DECLARE_FUNC_END()
+    }
 
-    template <typename T>
-    AOP_DECLARE_FUNC_BEGIN(Hello2, void, [[maybe_unused]] T t)
-    AOP_DECLARE_FUNC_END()
+    int hello(int x) {
+        return x;
+    }
+
+    // void Hello2(int x) {
+    //     AOP_DECLARE_FUNC_BEGIN(hello2, x)
+    //     AOP_DECLARE_FUNC_END()
+    // }
+
+    // void hello2([[maybe_unused]] int x) {}
 };
 
 }  // namespace aop::test
