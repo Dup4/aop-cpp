@@ -1,8 +1,8 @@
-option(DECORATOR_CPP_BUILD_TESTS "Build all of decorator's own tests." OFF)
+option(AOP_CPP_BUILD_TESTS "Build all of aop's own tests." OFF)
 
 cmake_minimum_required(VERSION 3.14)
 
-project(decorator VERSION 0.0.0)
+project(aop VERSION 0.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -19,10 +19,10 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/
 )
 
-add_library(decorator INTERFACE)
-target_include_directories(decorator INTERFACE ${PROJECT_SOURCE_DIR}/include/)
+add_library(aop INTERFACE)
+target_include_directories(aop INTERFACE ${PROJECT_SOURCE_DIR}/include/)
 
-if(DECORATOR_CPP_BUILD_TESTS)
+if(AOP_CPP_BUILD_TESTS)
     enable_testing()
 
     add_subdirectory(test/)
