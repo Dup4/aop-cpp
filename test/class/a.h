@@ -18,12 +18,12 @@ public:
         return x;
     }
 
-    // void Hello2(int x) {
-    //     AOP_DECLARE_FUNC_BEGIN(hello2, x)
-    //     AOP_DECLARE_FUNC_END()
-    // }
+    void Hello2(int x) {
+        AOP_DECLARE_FUNC_BEGIN(hello2, x)
+        AOP_DECLARE_FUNC_END()
+    }
 
-    // void hello2([[maybe_unused]] int x) {}
+    void hello2([[maybe_unused]] int x) {}
 };
 
 }  // namespace aop::test
