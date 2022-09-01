@@ -16,8 +16,8 @@ public:
         };
     }
 
-    template <typename PreFunc, typename Func>
-    static auto ConcatFuncByQueue(PreFunc&& pre_func, Func&& func, AOPExecuteContext& ctx) {
+    template <typename PreFunc, typename Func, typename Context>
+    static auto ConcatFuncByQueue(PreFunc&& pre_func, Func&& func, Context& ctx) {
         return [&]() {
             pre_func();
 
@@ -29,8 +29,8 @@ public:
         };
     }
 
-    template <typename PreFunc, typename Func>
-    static auto ConcatFuncByStack(PreFunc&& pre_func, Func&& func, AOPExecuteContext& ctx) {
+    template <typename PreFunc, typename Func, typename Context>
+    static auto ConcatFuncByStack(PreFunc&& pre_func, Func&& func, Context& ctx) {
         return [&]() {
             func();
 
