@@ -23,6 +23,22 @@ public:
         return getClassTypeName<T>(custom_name, true);
     }
 
+    static std::string GetFuncName(std::string_view complete_func_name) {
+        std::string res = "";
+
+        for (int i = int(complete_func_name.length()) - 1; i >= 0; i--) {
+            const char& c = complete_func_name[i];
+            if (c == ':') {
+                break;
+            }
+
+            res += c;
+        }
+
+        reverse(res.begin(), res.end());
+        return res;
+    }
+
 private:
     template <typename T>
     static std::string getClassTypeName(std::string_view custom_name, bool is_pretty) {

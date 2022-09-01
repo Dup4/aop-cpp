@@ -11,6 +11,10 @@ public:
 
     AOP_DECLARE_FUNC_BEGIN(Hello, void)
     AOP_DECLARE_FUNC_END()
+
+    template <typename T>
+    AOP_DECLARE_FUNC_BEGIN(Hello2, void, [[maybe_unused]] T t)
+    AOP_DECLARE_FUNC_END()
 };
 
 }  // namespace aop::test
