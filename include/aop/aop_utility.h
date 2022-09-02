@@ -41,27 +41,17 @@ public:
     }
 
     template <typename PreFunc, typename Func, typename Context>
-    static auto ConcatFuncByQueue(PreFunc&& pre_func, Func&& func, Context& ctx) {
-        return [pre_func, func, &ctx]() {
+    static auto ConcatFuncByQueue(PreFunc&& pre_func, Func&& func, [[maybe_unused]] Context& ctx) {
+        return [pre_func, func]() {
             pre_func();
-
-            if (ctx.is_break) {
-                return;
-            }
-
             func();
         };
     }
 
     template <typename PreFunc, typename Func, typename Context>
-    static auto ConcatFuncByStack(PreFunc&& pre_func, Func&& func, Context& ctx) {
-        return [pre_func, func, &ctx]() {
+    static auto ConcatFuncByStack(PreFunc&& pre_func, Func&& func, [[maybe_unused]] Context& ctx) {
+        return [pre_func, func]() {
             func();
-
-            if (ctx.is_break) {
-                return;
-            }
-
             pre_func();
         };
     }

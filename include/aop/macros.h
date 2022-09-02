@@ -31,7 +31,10 @@
 
 #define AOP_DECLARE_FUNC_ASPECT(aspect)                                                   \
     {                                                                                     \
-        auto* a = aspect.BuildPtr();                                                      \
+        using AspectType = std::remove_pointer_t<decltype(aspect.BuildPtr())>;            \
+        std::shared_ptr<AspectType> a = nullptr;                                          \
+        a.reset(aspect.BuildPtr());                                                       \
+                                                                                          \
         before_func = AOPUtility::ConcatFuncByQueue(before_func,                          \
                                                     proxy_args_func([a](auto&&... args) { \
                                                         a->Before(args...);               \
@@ -41,7 +44,6 @@
         after_func = AOPUtility::ConcatFuncByStack(after_func,                            \
                                                    proxy_args_func([a](auto&&... args) {  \
                                                        a->After(args...);                 \
-                                                       delete a;                          \
                                                    }),                                    \
                                                    ctx);                                  \
     }

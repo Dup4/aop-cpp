@@ -4,6 +4,8 @@
 
 #include "../aspect/a.h"
 #include "../aspect/b.h"
+#include "../aspect/c.h"
+#include "../aspect/d.h"
 
 namespace aop::test {
 
@@ -36,6 +38,17 @@ public:
     }
 
     int hello3(int& x) {
+        return x;
+    }
+
+    int Hello4(int x) {
+        AOP_DECLARE_FUNC_BEGIN(AOPExecuteContext, hello4, x)
+        AOP_DECLARE_FUNC_ASPECT(aspect::C())
+        AOP_DECLARE_FUNC_ASPECT(aspect::D())
+        AOP_DECLARE_FUNC_END()
+    }
+
+    int hello4(int& x) {
         return x;
     }
 };

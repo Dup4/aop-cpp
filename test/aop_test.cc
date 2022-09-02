@@ -26,6 +26,11 @@ TEST_F(AOPTest, aop_test) {
         int y = 1;
         EXPECT_EQ(a.Hello3(y), 2);
     }
+
+    {
+        int x = 1;
+        EXPECT_EQ(a.Hello4(x), 5);
+    }
 }
 
 }  // namespace aop::test
