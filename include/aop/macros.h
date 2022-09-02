@@ -45,17 +45,13 @@
     }
 
 #define AOP_DECLARE_FUNC_END()                      \
-    if (!ctx.is_break) {                            \
-        before_func();                              \
-    }                                               \
+    before_func();                                  \
                                                     \
     if (!ctx.is_break) {                            \
         execute_func();                             \
     }                                               \
                                                     \
-    if (!ctx.is_break) {                            \
-        after_func();                               \
-    }                                               \
+    after_func();                                   \
                                                     \
     return std::invoke([&]() {                      \
         if constexpr (std::is_void_v<ReturnType>) { \
