@@ -20,16 +20,10 @@ public:
         AOP_DECLARE_FUNC_END()
     }
 
-    int hello(int x) {
-        return x;
-    }
-
     void Hello2(int x) {
         AOP_DECLARE_FUNC_BEGIN(AOPExecuteContext, hello2, x)
         AOP_DECLARE_FUNC_END()
     }
-
-    void hello2([[maybe_unused]] int x) {}
 
     int Hello3(int x) {
         AOP_DECLARE_FUNC_BEGIN(AOPExecuteContext, hello3, x)
@@ -37,15 +31,22 @@ public:
         AOP_DECLARE_FUNC_END()
     }
 
-    int hello3(int& x) {
-        return x;
-    }
-
     int Hello4(int x) {
         AOP_DECLARE_FUNC_BEGIN(AOPExecuteContext, hello4, x)
         AOP_DECLARE_FUNC_ASPECT(aspect::C())
         AOP_DECLARE_FUNC_ASPECT(aspect::D())
         AOP_DECLARE_FUNC_END()
+    }
+
+private:
+    int hello(int x) {
+        return x;
+    }
+
+    void hello2([[maybe_unused]] int x) {}
+
+    int hello3(int& x) {
+        return x;
     }
 
     int hello4(int& x) {
