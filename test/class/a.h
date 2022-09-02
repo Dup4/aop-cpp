@@ -3,6 +3,7 @@
 #include "aop/aop.h"
 
 #include "../aspect/a.h"
+#include "../aspect/b.h"
 
 namespace aop::test {
 
@@ -27,6 +28,16 @@ public:
     }
 
     void hello2([[maybe_unused]] int x) {}
+
+    int Hello3(int x) {
+        AOP_DECLARE_FUNC_BEGIN(hello3, x)
+        AOP_DECLARE_FUNC_ASPECT(aspect::B())
+        AOP_DECLARE_FUNC_END()
+    }
+
+    int hello3(int& x) {
+        return x;
+    }
 };
 
 }  // namespace aop::test

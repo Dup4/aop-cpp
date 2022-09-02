@@ -14,8 +14,18 @@ protected:
 
 TEST_F(AOPTest, aop_test) {
     A a;
-    int x = 1;
-    EXPECT_EQ(a.Hello(x), 3);
+
+    {
+        int x = 1;
+        EXPECT_EQ(a.Hello(x), 3);
+    }
+
+    {
+        int x = 2;
+        EXPECT_EQ(a.Hello3(x), 5);
+        int y = 1;
+        EXPECT_EQ(a.Hello3(y), 2);
+    }
 }
 
 }  // namespace aop::test
