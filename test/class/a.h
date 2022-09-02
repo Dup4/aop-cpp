@@ -13,7 +13,7 @@ public:
     ~A() {}
 
     int Hello(int& x) {
-        AOP_DECLARE_FUNC_BEGIN(hello, x)
+        AOP_DECLARE_FUNC_BEGIN(AOPExecuteContext, hello, x)
         AOP_DECLARE_FUNC_ASPECT(aspect::A())
         AOP_DECLARE_FUNC_END()
     }
@@ -23,14 +23,14 @@ public:
     }
 
     void Hello2(int x) {
-        AOP_DECLARE_FUNC_BEGIN(hello2, x)
+        AOP_DECLARE_FUNC_BEGIN(AOPExecuteContext, hello2, x)
         AOP_DECLARE_FUNC_END()
     }
 
     void hello2([[maybe_unused]] int x) {}
 
     int Hello3(int x) {
-        AOP_DECLARE_FUNC_BEGIN(hello3, x)
+        AOP_DECLARE_FUNC_BEGIN(AOPExecuteContext, hello3, x)
         AOP_DECLARE_FUNC_ASPECT(aspect::B())
         AOP_DECLARE_FUNC_END()
     }

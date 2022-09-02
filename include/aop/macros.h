@@ -8,10 +8,10 @@
 #include "./aop_execute_context.h"
 #include "./aop_utility.h"
 
-#define AOP_DECLARE_FUNC_BEGIN(func, ...)                           \
+#define AOP_DECLARE_FUNC_BEGIN(ContextType, func, ...)              \
     using ReturnType = std::decay_t<decltype(func(__VA_ARGS__))>;   \
     auto res = AOPUtility::GetInitValue<ReturnType>();              \
-    auto ctx = AOPExecuteContext{};                                 \
+    auto ctx = ContextType{};                                       \
                                                                     \
     [[maybe_unused]] auto proxy_args_func = std::invoke([&]() {     \
         if constexpr (std::is_void_v<ReturnType>) {                 \
