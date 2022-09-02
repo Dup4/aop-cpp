@@ -33,14 +33,16 @@ public:
 
     template <typename... Args>
     static auto GetProxyFunc(Args&&... args) {
-        return [&](auto&& Func) {
-            return Func(std::forward<Args>(args)...);
+        return [&](auto&& func) {
+            return [&]() {
+                return func(std::forward<Args>(args)...);
+            };
         };
     }
 
     template <typename PreFunc, typename Func, typename Context>
     static auto ConcatFuncByQueue(PreFunc&& pre_func, Func&& func, Context& ctx) {
-        return [&]() {
+        return [pre_func, func, &ctx]() {
             pre_func();
 
             if (ctx.is_break) {
@@ -53,7 +55,7 @@ public:
 
     template <typename PreFunc, typename Func, typename Context>
     static auto ConcatFuncByStack(PreFunc&& pre_func, Func&& func, Context& ctx) {
-        return [&]() {
+        return [pre_func, func, &ctx]() {
             func();
 
             if (ctx.is_break) {

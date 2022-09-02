@@ -2,6 +2,7 @@
 #define AOP_MACROS_H
 
 #include <functional>
+#include <memory>
 #include <type_traits>
 
 #include "./aop_execute_context.h"
@@ -20,28 +21,29 @@
         }                                                           \
     });                                                             \
                                                                     \
-    auto before_func = []() {};                                     \
-    auto after_func = []() {};                                      \
+    std::function<void()> before_func = []() {};                    \
+    std::function<void()> after_func = []() {};                     \
     auto execute_func = [&]() {                                     \
         res = AOPUtility::GetExecuteFuncValue<ReturnType>([&]() {   \
             return func(__VA_ARGS__);                               \
         });                                                         \
     };
 
-#define AOP_DECLARE_FUNC_ASPECT(aspect)                                                    \
-    {                                                                                      \
-        auto a = aspect;                                                                   \
-        before_func = AOPUtility::ConcatFuncByQueue(before_func,                           \
-                                                    proxy_args_func([&a](auto&&... args) { \
-                                                        a.Before(args);                    \
-                                                    }),                                    \
-                                                    ctx);                                  \
-                                                                                           \
-        after_func = AOPUtility::ConcatFuncByStack(after_func,                             \
-                                                   proxy_args_func([&a](auto&&... args) {  \
-                                                       a.After(args);                      \
-                                                   }),                                     \
-                                                   ctx);                                   \
+#define AOP_DECLARE_FUNC_ASPECT(aspect)                                                   \
+    {                                                                                     \
+        auto* a = aspect.BuildPtr();                                                      \
+        before_func = AOPUtility::ConcatFuncByQueue(before_func,                          \
+                                                    proxy_args_func([a](auto&&... args) { \
+                                                        a->Before(args...);               \
+                                                    }),                                   \
+                                                    ctx);                                 \
+                                                                                          \
+        after_func = AOPUtility::ConcatFuncByStack(after_func,                            \
+                                                   proxy_args_func([a](auto&&... args) {  \
+                                                       a->After(args...);                 \
+                                                       delete a;                          \
+                                                   }),                                    \
+                                                   ctx);                                  \
     }
 
 #define AOP_DECLARE_FUNC_END()                      \

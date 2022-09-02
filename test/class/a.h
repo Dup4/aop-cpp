@@ -2,6 +2,8 @@
 
 #include "aop/aop.h"
 
+#include "../aspect/a.h"
+
 namespace aop::test {
 
 class A {
@@ -9,8 +11,9 @@ public:
     A() {}
     ~A() {}
 
-    int Hello(int x) {
+    int Hello(int& x) {
         AOP_DECLARE_FUNC_BEGIN(hello, x)
+        AOP_DECLARE_FUNC_ASPECT(aspect::A())
         AOP_DECLARE_FUNC_END()
     }
 

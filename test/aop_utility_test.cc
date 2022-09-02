@@ -34,8 +34,8 @@ TEST_F(AOPUtilityTest, GetProxyFunc) {
             auto f1_ = p(f1);
             auto f2_ = p(f2);
 
-            EXPECT_EQ(f1_, "f1");
-            EXPECT_EQ(f2_, 2);
+            EXPECT_EQ(f1_(), "f1");
+            EXPECT_EQ(f2_(), 2);
         };
 
         int z = 1;
