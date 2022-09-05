@@ -3,10 +3,15 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include <type_traits>
 
 #include "./aop_execute_context.h"
 #include "./aop_utility.h"
+
+#define AOP_CONCAT_ASPECT_NAME_(prefix, line, counter) prefix##_##line##_##counter
+#define AOP_CONCAT_ASPECT_NAME(prefix, line, counter) AOP_CONCAT_ASPECT_NAME_(prefix, line, counter)
+#define AOP_GENERATE_ASPECT_NAME AOP_CONCAT_ASPECT_NAME(AOP_ASPECT_NAME, __LINE__, __COUNTER__)
 
 #define AOP_DECLARE_FUNC_BEGIN(ContextType, func, ...)                                                     \
     using ReturnType = std::decay_t<decltype(func(__VA_ARGS__))>;                                          \
