@@ -40,7 +40,7 @@
     __aop_internal_aspect_ptr = static_cast<void*>(aspect.BuildPtr());                                 \
                                                                                                        \
     [[maybe_unused]] auto AOP_GENERATE_ASPECT_NAME =                                                   \
-            AOPAspectGuard<std::remove_pointer_t<decltype(aspect.BuildPtr())>>::Builder()              \
+            ::aop::AOPAspectGuard<std::remove_pointer_t<decltype(aspect.BuildPtr())>>::Builder()       \
                     .WithBefore(proxy_args_func([__aop_internal_aspect_ptr](auto&&... args) {          \
                         auto* a = static_cast<decltype(aspect.BuildPtr())>(__aop_internal_aspect_ptr); \
                         a->Before(args...);                                                            \
