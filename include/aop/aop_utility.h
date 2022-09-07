@@ -35,7 +35,7 @@ public:
     static auto GetProxyFunc(Args&&... args) {
         return [&](auto&& func) {
             // Due to `func` maybe a rvalue.
-            return [&, func = func]() {
+            return [&, func = std::move(func)]() {
                 return func(std::forward<Args>(args)...);
             };
         };
