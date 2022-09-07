@@ -34,7 +34,7 @@ public:
     template <typename... Args>
     static auto GetProxyFunc(Args&&... args) {
         return [&](auto&& func) {
-            // Due to `func` maybe a right value.
+            // Due to `func` maybe a rvalue.
             return [&, func = func]() {
                 return func(std::forward<Args>(args)...);
             };
